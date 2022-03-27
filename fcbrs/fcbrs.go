@@ -1,5 +1,7 @@
 package fcbrs
 
+import "math"
+
 const tagetValue = 8
 const amountMoves = 5
 
@@ -69,6 +71,14 @@ func calcMove(vals []int, moveIdx int) []int {
 	return vals
 }
 
+func getScore(vals []int) int {
+	var score int
+	for _, val := range vals {
+		score = score + int(math.Abs(float64(tagetValue-val)))
+	}
+	return score
+}
+
 func movesToInstructions(moves []int) []string {
 	out := []string{}
 	for _, move := range moves {
@@ -88,6 +98,9 @@ func Solve(a, b, c int) []string {
 		return out
 	}()
 	np := nextProduct([]int{0, 1, 2, 3, 4, 5}, amountMoves)
+	bestScore := 24
+	var currentScore int
+	var bestMoveset []string
 	var tmpVals []int
 	for i := 0; i < numPossibleCombinations; i++ {
 		product := np()
@@ -98,7 +111,12 @@ func Solve(a, b, c int) []string {
 		if tmpVals[0] == tagetValue && tmpVals[1] == tagetValue && tmpVals[2] == tagetValue {
 			return movesToInstructions(product)
 		}
+		currentScore = getScore(tmpVals)
+		if currentScore < bestScore {
+			bestScore = currentScore
+			bestMoveset = movesToInstructions(product)
+		}
 	}
 
-	return nil
+	return bestMoveset
 }

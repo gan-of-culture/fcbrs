@@ -87,6 +87,13 @@ func TestSolve(t *testing.T) {
 			C:    9,
 			Want: []string{"Investment", "Investment", "Blackmail", "Donation", "Orgy"},
 		},
+		{
+			Name: "non perfect moveset",
+			A:    9,
+			B:    7,
+			C:    11,
+			Want: []string{"Blackmail", "Donation", "Donation", "Orgy", "Teambuilding"},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.Name, func(t *testing.T) {
